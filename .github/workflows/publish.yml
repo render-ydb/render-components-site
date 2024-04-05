@@ -1,0 +1,22 @@
+name: Deploy components dosc site with PM2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies and compile project
+        run: |
+          npm ci --force
+          npm run build
+      - name: Build deployment package (excluding node_modules and other directories)
+        run: |
+          tar -czvf components.tar.gz .
